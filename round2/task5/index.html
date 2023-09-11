@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Round-2(Tic-tac-toe)</title>
+  	<link rel="stylesheet" type="text/css" href="css.css">
+</head>
+<body>
+    <h1>tic-tac-toe</h1>
+    <div class="game-container">
+        <div class="cell" onclick="makeMove(0)"></div>
+        <div class="cell" onclick="makeMove(1)"></div>
+        <div class="cell" onclick="makeMove(2)"></div>
+        <div class="cell" onclick="makeMove(3)"></div>
+        <div class="cell" onclick="makeMove(4)"></div>
+        <div class="cell" onclick="makeMove(5)"></div>
+        <div class="cell" onclick="makeMove(6)"></div>
+        <div class="cell" onclick="makeMove(7)"></div>
+        <div class="cell" onclick="makeMove(8)"></div>
+    </div>
+    <div class="status" id="status">Player X's turn</div>
+    <button class="reset-button" onclick="resetGame()">Reset Game</button>
+    <script>
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+        const statusDisplay = document.getElementById('status');
+
+        function makeMove(cellIndex) {
+            if (gameBoard[cellIndex] === '' && gameActive) {
+                gameBoard[cellIndex] = currentPlayer;
+                document.getElementsByClassName('cell')[cellIndex].textContent = currentPlayer;
+                checkWinner();
+                togglePlayer();
+            }
+        }
+
+        function togglePlayer() {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+        }
+
+        function checkWinner() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            for (let pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    gameActive = false;
+                    statusDisplay.textContent = `Player ${currentPlayer} wins!`;
+                    return;
+                }
+            }
+
+            if (!gameBoard.includes('')) {
+                gameActive = false;
+                statusDisplay.textContent = "It's a draw!";
+            }
+        }
+
+        function resetGame() {
+            currentPlayer = 'X';
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+            document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+        }
+
+        statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+    </script>
+</body>
+</html>
